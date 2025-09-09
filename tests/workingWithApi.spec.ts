@@ -42,9 +42,7 @@ test('create from api and delete from ui', async ({ page, request }) => {
   await page.getByText('This is a test title').click()
   await page.getByRole('button', { name: "Delete Article" }).first().click()
   await page.getByText('Global Feed').click()
-
   await expect(page.locator('app-article-list h1').first()).not.toContainText('This is a test title')
-
 })
 
 test('create from ui and delete from api', async ({ page, request }) => {
@@ -56,11 +54,9 @@ test('create from ui and delete from api', async ({ page, request }) => {
   const articleResponse = await page.waitForResponse('https://conduit-api.bondaracademy.com/api/articles/')
   const articleResponseBody = await articleResponse.json()
   const slugId = articleResponseBody.article.slug
-
   await expect(page.locator('.article-page h1')).toContainText('Playwright is awesome')
   await page.getByText('Home').first().click()
   await page.getByText('Global Feed').click()
-
   await expect(page.locator('app-article-list h1').first()).toContainText('Playwright is awesome')
 
   const deleteArticleResponse = await request.delete(`https://conduit-api.bondaracademy.com/api/articles/${slugId}`)
@@ -76,15 +72,11 @@ test('create and delete from api', async ({ page, request }) => {
   expect(articleResponse.status()).toEqual(201)
   const articleResponseBody = await articleResponse.json()
   const slugId = articleResponseBody.article.slug
-
   await page.getByText('Global Feed').click()
-
   await expect(page.locator('app-article-list h1').first()).toContainText('This is a test from teo')
 
   const deleteArticleResponse = await request.delete(`https://conduit-api.bondaracademy.com/api/articles/${slugId}`)
   expect(deleteArticleResponse.status()).toEqual(204)
-
   await page.getByText('Global Feed').click()
-
   await expect(page.locator('app-article-list h1').first()).not.toContainText('This is a test from teo')
 })
