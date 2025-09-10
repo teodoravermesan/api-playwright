@@ -14,8 +14,5 @@ setup('authentication', async({request}) => {
   const accessToken = responseBody.user.token
   user.origins[0].localStorage[0].value = accessToken
   fs.writeFileSync(authFile, JSON.stringify(user))
-
   process.env['ACCESS_TOKEN'] = accessToken
-
-
 })
